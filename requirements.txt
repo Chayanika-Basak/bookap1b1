@@ -15,20 +15,20 @@
 // Books
 
 // We need an API
-// to get all books
-// to get specific book
-// to get a list of books based on category
+// to get all books ✔️
+// to get specific book based on isbn✔️
+// to get a list of books based on category ✔️
 // to get a list of books based on author
 
 // Author
 
 // We need an API
-// to get all authors
-// to get specific author
-// to get a list of authors based on a book.
+// to get all authors ✔️
+// to get specific author based on id✔️
+// to get a list of authors based on a book. ✔️
 
 // Publication
 // We need an API
-// to get all publications
-// to get specific publication
+// to get all publications ✔️
+// to get specific publication based on isbn ✔️
 // to get a list of publications based on a book.

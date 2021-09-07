@@ -12,11 +12,11 @@ const books = [
     {
         ISBN: "12345TWO",
         title: "Getting started with Python",
-        authors: [1,2],
+        authors: [1],
         language: "en",
         pubDate: "2021-07-07",
         numOfPage: 225,
-        Category: ["fiction","programming","tech","web dev"],
+        Category: ["programming","tech","web dev"],
     }
 ];
 
@@ -24,13 +24,13 @@ const authors = [
     {
         id: 1,
         name: "Pavan",
-        books: ["12345ONE"],
+        books: ["12345ONE","12345TWO"],
     },
 
     {
         id: 2,
         name: "Deepak",
-        books: ["12345ONE"]
+        books: ["12345ONE",]
     }
 ];
 
