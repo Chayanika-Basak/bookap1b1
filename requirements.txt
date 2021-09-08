@@ -12,23 +12,61 @@
 // Name, Id, Books[]
 
 // Requirements
+
 // Books
 
+GET
 // We need an API
 // to get all books ✔️
 // to get specific book based on isbn✔️
 // to get a list of books based on category ✔️
 // to get a list of books based on author
 
+
+POST
+New Book ✔️
+
+PUT
+Update book details ✔️
+update/add new author ✔️
+
+DELETE
+delete a book
+delete an author
+
 // Author
 
+GET
 // We need an API
 // to get all authors ✔️
 // to get specific author based on id✔️
 // to get a list of authors based on a book. ✔️
 
+POST
+New author ✔️
+
+PUT
+update Author name using id ✔️
+
+DELETE
+Delete an author
+
+
 // Publication
+
+GET
 // We need an API
 // to get all publications ✔️
-// to get specific publication based on isbn ✔️
-// to get a list of publications based on a book.
+// to get specific publication based on id ✔️
+// to get a list of publications based on a book. ✔️
+
+POST
+Add new publication ✔️
+
+PUT
+update publication name using id ✔️
+update/add new book to a publication ✔️
+
+DELETE
+delete a book from publication
+delete a publication

@@ -103,35 +103,36 @@ shapeAI.get("/c/:category", (req,res) => {
 });
 
 /*
-Route           /author/:author
+Route           /author/books/:id
 Description     get specific books based on an author
 Access          PUBLIC
-Parameters      author
+Parameters      id
 Method          GET
 
-
-shapeAI.get("/author/:author", (req,res) => {
-    const getSpecificBooks = database.books.filter(
-        (book) => book.Category.includes(req.params.category));
-        //includes(): searches for the passed value within the array
-
-    if(getSpecificBooks.length === 0) {
-        return res.json({error: `No book found for the category
-         of ${req.params.category}`});
-    }
-    return res.json({BooksByCategory: getSpecificBooks});
-});
 */
 
+shapeAI.get("/author/books/:id", (req,res) => {
+
+    const getSpecificBooks = database.books.filter(
+        (book) => book.authors.includes(req.params.id));
+
+    if(getSpecificBooks.length === 0) {
+        return res.json({error: `No book found for the author
+         of id ${req.params.id}`});
+    }
+    return res.json({BooksByAuthor: getSpecificBooks});
+});
+
+
 /*
-Route           /author/:isbn
+Route           /authors/:isbn
 Description     get specific authors based on isbn
 Access          PUBLIC
 Parameters      isbn
 Method          GET
 */
 
-shapeAI.get("/author/:isbn", (req,res) => {
+shapeAI.get("/authors/:isbn", (req,res) => {
     const getSpecificAuthors = database.authors.filter(
         (author) => author.books.includes(req.params.isbn));
 
@@ -150,7 +151,7 @@ Parameters      isbn
 Method          GET
 */
 
-shapeAI.get("/publications/:isbn", (req,res) => {
+shapeAI.get("/book/publications/:isbn", (req,res) => {
     const getSpecificPublication = database.publications.filter(
         (publication) => publication.books.includes(req.params.isbn)); 
 
@@ -159,6 +160,199 @@ shapeAI.get("/publications/:isbn", (req,res) => {
         ${req.params.isbn}`});
     }
     return res.json({PublicationByISBN: getSpecificPublication});
+});
+
+/*
+Route           /publications/:id
+Description     get specific publication based on id
+Access          PUBLIC
+Parameters      id
+Method          GET
+*/
+
+shapeAI.get("/publications/:id", (req,res) => {
+    const getSpecificPublication = database.publications.filter(
+        (publication) => publication.id == req.params.id); 
+
+    if(getSpecificPublication.length === 0) {
+        return res.json({error: `No publication found having id
+        ${req.params.id}`});
+    }
+    return res.json({Publication: getSpecificPublication});
+});
+
+/*
+Route           /book/new
+Description     Add new Book
+Access          PUBLIC
+Parameters      NONE
+Method          POST
+
+*/
+
+shapeAI.post("/book/new", (req,res) =>
+{
+    const { newBook } = req.body;
+
+    database.books.push(newBook);
+
+    return res.json({books : database.books, message: "book was added!!"});
+});
+
+/*
+Route           /author/new
+Description     Add new Author
+Access          PUBLIC
+Parameters      NONE
+Method          POST
+
+*/
+
+shapeAI.post("/author/new", (req,res) =>
+{
+    const { newAuthor } = req.body;
+
+    database.authors.push(newAuthor);
+
+    return res.json({authors : database.authors, message: "Author was added!!"});
+});
+
+/*
+Route           /publication/new
+Description     Add new Publication
+Access          PUBLIC
+Parameters      NONE
+Method          POST
+
+*/
+
+shapeAI.post("/publication/new", (req,res) =>
+{
+    const { newPublication } = req.body;
+
+    database.publications.push(newPublication);
+
+    return res.json({publications : database.publications, message: "Publication was added!!"});
+}); 
+
+/*
+Route           /book/update/:isbn
+Description     Update book details
+Access          PUBLIC
+Parameters      isbn
+Method          PUT
+
+*/
+
+shapeAI.put("/book/update/:isbn", (req,res) =>
+{
+    database.books.forEach((book) =>
+    {
+        if(book.ISBN === req.params.isbn)
+        book.title = req.body.bookTitle;
+        return;
+    });
+
+    return res.json({books: database.books});
+});
+
+/*
+Route           /book/author/update/:isbn
+Description     Update/Add new Author
+Access          PUBLIC
+Parameters      isbn
+Method          PUT
+
+*/
+
+shapeAI.put("/book/author/update/:isbn", (req,res) =>
+{
+    database.books.forEach((book) =>
+    {
+        if(book.ISBN === req.params.isbn)
+        return book.authors.push(req.body.newAuthor);
+    });
+
+    database.authors.forEach((author) =>
+    {
+        if(author.id === req.body.newAuthor) 
+        return author.books.push(req.params.isbn);
+    });
+
+    return res.json({books: database.books, authors: database.authors, message: "New Author was added"});
+});
+
+
+/*
+Route           /author/update/:id
+Description     Update author name using id
+Access          PUBLIC
+Parameters      id
+Method          PUT
+
+*/
+
+shapeAI.put("/author/update/:id", (req,res) =>
+{
+    database.authors.forEach((author) =>
+    {
+        if(author.id == req.params.id)
+        author.name = req.body.authorName;
+        return;
+    });
+
+    return res.json({authors: database.authors});
+});
+
+/*
+Route           /update/publication/:id
+Description     Update publication name using id
+Access          PUBLIC
+Parameters      id
+Method          PUT
+
+*/
+
+shapeAI.put("/update/publication/:id", (req,res) =>
+{
+    database.publications.forEach((publication) =>
+    {
+        if(publication.id == req.params.id)
+        publication.name = req.body.publicationName;
+        return;
+    });
+
+    return res.json({publications: database.publications});
+});
+
+/*
+Route           /update/book/publication/:isbn
+Description     Update/add new book to a publication
+Access          PUBLIC
+Parameters      isbn
+Method          PUT
+
+*/
+
+shapeAI.put("/update/book/publication/:isbn", (req,res) =>
+{
+    database.publications.forEach((publication) =>
+    {
+        if(publication.id === req.body.pubID) 
+        return publication.books.push(req.params.isbn);  
+    });
+
+    database.books.forEach((book) =>
+    {
+        if(book.ISBN == req.params.isbn) {
+        book.publication = req.body.pubID;
+        return;
+        }
+    });
+    return res.json({books: database.books, 
+        publications: database.publications,
+        message: "Successfully updated publication!!"
+    });
 });
 
 shapeAI.listen(3000, () => console.log("Server running!!"));
