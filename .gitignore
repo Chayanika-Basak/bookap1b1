@@ -1,1 +1,9 @@
 /node_modules
+
+package-lock.json
+
+.env
+
+requirements.txt
+
+mongoDB.txt
