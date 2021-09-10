@@ -4,6 +4,7 @@ package-lock.json
 
 .env
 
-requirements.txt
+needables.txt
 
 mongoDB.txt
+mongoDB_operators.txt
