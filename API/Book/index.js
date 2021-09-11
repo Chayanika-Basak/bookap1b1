@@ -87,11 +87,17 @@ Method          POST
 
 Router.post("/new", async (req,res) =>
 {
-    const { newBook } = req.body;
+    //exception handling by express to handle validation error by mongoose
+    try{
+        const { newBook } = req.body;
 
-    const addNewBook = BookModel.create(newBook);
+        const addNewBook = await BookModel.create(newBook);
 
-    return res.json({books : addNewBook, message: "book was added!!"});
+        return res.json({books : addNewBook, message: "book was added!!"});
+
+    } catch(error){
+        return res.json({error: error.message});
+    }
 });
 
 /*
@@ -105,6 +111,7 @@ Method          PUT
 
 Router.put("/update/:isbn", async (req,res) =>
 {
+    try{
     const updatedBook = await BookModel.findOneAndUpdate(
         {
             ISBN: req.params.isbn
@@ -118,6 +125,9 @@ Router.put("/update/:isbn", async (req,res) =>
     );
 
     return res.json({books: updatedBook});
+    }catch(error){
+        return res.json({error: error.message});        
+    }
 });
 
 /*
